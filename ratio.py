@@ -4,6 +4,7 @@ avg = 0
 ratioTot = 0
 ratios = []
 avgs = []
+diffs = []
 
 def getRatios(amount):
     global ratioTot, avg, counter  # Declare global variables
@@ -15,10 +16,12 @@ def getRatios(amount):
         ratios.append(ratio)
         avg = ratioTot / counter
         avgs.append(avg)
+        diff = primes[i+1] - primes[i]
+        diffs.append(diff)
         # print(f"Avg ratio so far: {avg}")
         counter += 1
 
-    return ratios, avgs
+    return ratios, avgs, diffs
 
 def genPrimes(max):
     primes = []
@@ -40,7 +43,7 @@ def isPrime(num):
             return False
     return True
 
-ratios, avgs=getRatios(amount)
+ratios, avgs, diffs=getRatios(amount)
 
 import matplotlib.pyplot as plt
 
@@ -48,15 +51,21 @@ fig, ax1 = plt.subplots()
 
 color = 'tab:red'
 ax1.set_xlabel('Data Points')
-ax1.set_ylabel('Averages', color=color)
-ax1.plot(avgs, color=color)
+ax1.set_ylabel('Ratios', color=color)
+ax1.plot(ratios, color=color)
 ax1.tick_params(axis='y', labelcolor=color)
 
 ax2 = ax1.twinx()  
 color = 'tab:blue'
-ax2.set_ylabel('Ratios', color=color)
-ax2.plot(ratios, color=color)
+ax2.set_ylabel('Averages', color=color)
+ax2.plot(avgs, color=color)
 ax2.tick_params(axis='y', labelcolor=color)
+
+# ax2 = ax1.twinx()  
+# color = 'tab:green'
+# ax2.set_ylabel('Differences', color=color)
+# ax2.plot(diffs, color=color)
+# ax2.tick_params(axis='y', labelcolor=color)
 
 fig.tight_layout()  
 plt.title('Ratios vs Averages on a Number Line')
